@@ -7,24 +7,18 @@ const getComputerChoice = () => {
     return choices[randomChoiceIndex];
 }
 
-const getHumanChoice = () => {
-    const HumanChoice = prompt("Please enter your choice: rock, paper, or scissors");
-    console.log(HumanChoice);
-    return HumanChoice;
-}
-
 const scores = {
     human: 0,
     comp: 0
 };
-const  playRound = (scores) => {
-    const  humanChoice = getHumanChoice();
-    const  compChoice = getComputerChoice();
+const playRound = (humanChoice) => {
 
-    if(humanChoice === compChoice) {
+    const compChoice = getComputerChoice();
+
+    if (humanChoice === compChoice) {
         console.log("It's a tie!");
     }
-    else if(
+    else if (
         (humanChoice === 'rock' && compChoice === 'scissors') ||
         (humanChoice === 'paper' && compChoice === 'rock') ||
         (humanChoice === 'scissors' && compChoice === 'paper')
@@ -35,16 +29,29 @@ const  playRound = (scores) => {
         console.log("You lose!");
         scores.comp++;
     }
+    updateScore();
 }
 
-const playGame = (rounds) => {
-    for(let i  = 0; i < rounds; i++) {
-        console.log(`Round ${i + 1}`);
-        playRound(scores);
+const updateScore = () => {
+    
+    const resultDiv = document.getElementById("result");
+    resultDiv.textContent = `Human: ${scores.human} - Computer: ${scores.comp}`;
+
+    if(scores.human >= 5 || scores.comp >= 5) {
+        const winner = scores.human >= 5 ? 'Human' : 'Computer';
+        alert(`${winner} won the game!`);
+        scores.human = 0;
+        scores.comp = 0;
+        resultDiv.textContent = `Human: 0 - Computer: 0`;
     }
-    console.log(`Final Score - Human: ${scores.human}, Computer: ${scores.comp}`);
-    scores.human = 0;
-    scores.comp = 0;
 }
 
-playGame(5);
+document.getElementById("rock").addEventListener("click", () => {
+    playRound('rock');
+})
+document.getElementById("paper").addEventListener("click", () => {
+    playRound('paper');
+})
+document.getElementById("scyther").addEventListener("click", () => {
+    playRound('scissors');
+})
